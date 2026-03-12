@@ -171,37 +171,43 @@ class MemberIsolationHandler:
 
     async def _activate_isolation(self) -> None:
         """Add entities to isolated_members and turn them OFF."""
-        new_isolated = self._group.group_context.isolated_members | frozenset(self._isolation_entity_ids)
-        self._group.group_context = replace(
-            self._group.group_context,
-            isolated_members=new_isolated,
-        )
-        _LOGGER.debug("[%s] Isolation activated for: %s", self._group.entity_id, self._isolation_entity_ids)
+        try:
+            new_isolated = self._group.group_context.isolated_members | frozenset(self._isolation_entity_ids)
+            self._group.group_context = replace(
+                self._group.group_context,
+                isolated_members=new_isolated,
+            )
+            _LOGGER.debug("[%s] Isolation activated for: %s", self._group.entity_id, self._isolation_entity_ids)
 
-        for entity_id in self._isolation_entity_ids:
-            handler = self._call_handlers.get(entity_id)
-            if handler is None:
-                continue
-            member_state = self._hass.states.get(entity_id)
-            if member_state and member_state.state != HVACMode.OFF:
-                await handler.call_immediate({"hvac_mode": HVACMode.OFF})
+            for entity_id in self._isolation_entity_ids:
+                handler = self._call_handlers.get(entity_id)
+                if handler is None:
+                    continue
+                member_state = self._hass.states.get(entity_id)
+                if member_state and member_state.state != HVACMode.OFF:
+                    await handler.call_immediate({"hvac_mode": HVACMode.OFF})
 
-        self._group.async_defer_or_update_ha_state()
+            self._group.async_defer_or_update_ha_state()
+        except Exception as error:
+            _LOGGER.error("[%s] Error activating isolation: %s", self._group.entity_id, error, exc_info=True)
 
     async def _deactivate_isolation(self) -> None:
         """Remove entities from isolated_members and restore to target_state."""
-        new_isolated = self._group.group_context.isolated_members - frozenset(self._isolation_entity_ids)
-        self._group.group_context = replace(
-            self._group.group_context,
-            isolated_members=new_isolated,
-        )
-        _LOGGER.debug("[%s] Isolation deactivated for: %s", self._group.entity_id, self._isolation_entity_ids)
+        try:
+            new_isolated = self._group.group_context.isolated_members - frozenset(self._isolation_entity_ids)
+            self._group.group_context = replace(
+                self._group.group_context,
+                isolated_members=new_isolated,
+            )
+            _LOGGER.debug("[%s] Isolation deactivated for: %s", self._group.entity_id, self._isolation_entity_ids)
 
-        # Skip restore if globally blocked (e.g. window open) — Window Control
-        # will restore all members (including the newly un-isolated one) when the block is lifted.
-        if not self._group.group_context.is_blocked:
-            for entity_id in self._isolation_entity_ids:
-                if handler := self._call_handlers.get(entity_id):
-                    await handler.call_immediate()
+            # Skip restore if globally blocked (e.g. window open) — Window Control
+            # will restore all members (including the newly un-isolated one) when the block is lifted.
+            if not self._group.group_context.is_blocked:
+                for entity_id in self._isolation_entity_ids:
+                    if handler := self._call_handlers.get(entity_id):
+                        await handler.call_immediate()
 
-        self._group.async_defer_or_update_ha_state()
+            self._group.async_defer_or_update_ha_state()
+        except Exception as error:
+            _LOGGER.error("[%s] Error deactivating isolation: %s", self._group.entity_id, error, exc_info=True)

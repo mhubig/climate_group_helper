@@ -511,7 +511,7 @@ class ClimateGroup(GroupEntity, ClimateEntity, RestoreEntity):
 
     def _determine_hvac_mode(self, current_hvac_modes: list[str]) -> HVACMode | str | None:
         """Determine the group's HVAC mode based on member modes and strategy."""
-        
+
         # Optimistic UI Update (Grace Period)
         if (
             self.shared_target_state.last_source == "ui"
@@ -714,10 +714,10 @@ class ClimateGroup(GroupEntity, ClimateEntity, RestoreEntity):
                     # Check if trigger is a mapped member
                     if self._event_entity_id not in self._target_member_map.values():
                         return
-                    
+
                     # Filter targets for this member
                     entity_ids = [
-                        target for target, member in self._target_member_map.items() 
+                        target for target, member in self._target_member_map.items()
                         if member == self._event_entity_id
                     ]
 
@@ -742,7 +742,7 @@ class ClimateGroup(GroupEntity, ClimateEntity, RestoreEntity):
                         ref_temp = self._member_temp_avg
                         if member_state and (member_temp := member_state.attributes.get(ATTR_CURRENT_TEMPERATURE)) is not None:
                             ref_temp = float(member_temp)
-                        
+
                         if ref_temp is None:
                             continue
 
@@ -773,7 +773,7 @@ class ClimateGroup(GroupEntity, ClimateEntity, RestoreEntity):
                     continue
 
                 _LOGGER.debug(
-                    "[%s] Updating %s to %s (domain=%s, mode=%s, force=%s)", 
+                    "[%s] Updating %s to %s (domain=%s, mode=%s, force=%s)",
                     self.entity_id, target_state.entity_id, target_val, domain, mode, force
                 )
                 self.hass.async_create_task(
@@ -784,7 +784,7 @@ class ClimateGroup(GroupEntity, ClimateEntity, RestoreEntity):
                     )
                 )
             except Exception as error:
-                _LOGGER.error("[%s] Error updating target entity %s: %s", self.entity_id, target_state.entity_id, error)
+                _LOGGER.error("[%s] Error updating target entity %s: %s", self.entity_id, target_state.entity_id, error, exc_info=True)
                 continue
 
     @callback

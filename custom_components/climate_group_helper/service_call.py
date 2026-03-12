@@ -104,7 +104,7 @@ class BaseServiceCallHandler(ABC):
             try:
                 callback_func()
             except Exception as e:
-                _LOGGER.error("[%s] Error in execution callback: %s", self._group.entity_id, e)
+                _LOGGER.error("[%s] Error in execution callback: %s", self._group.entity_id, e, exc_info=True)
 
     async def call_debounced(self, data: dict[str, Any] | None = None) -> None:
         """Debounce and execute a service call.
@@ -196,7 +196,7 @@ class BaseServiceCallHandler(ABC):
                 if "not_valid_hvac_mode" in error_msg:
                     _LOGGER.debug("[%s] Call attempt (%d/%d) skipped (not supported): %s", self._group.entity_id, attempt + 1, attempts, error_msg)
                 else:
-                    _LOGGER.warning("[%s] Call attempt (%d/%d) failed: %s", self._group.entity_id, attempt + 1, attempts, error)
+                    _LOGGER.warning("[%s] Call attempt (%d/%d) failed: %s", self._group.entity_id, attempt + 1, attempts, error, exc_info=True)
 
             if attempts > 1 and attempt < (attempts - 1):
                 await asyncio.sleep(delay)
