@@ -412,5 +412,28 @@
       "turn_on": "开启",
       "turn_off": "关闭"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "HVAC 模式 '{mode}' 不被 {entity_id} 支持。请检查设备的可用模式。"
+    },
+    "invalid_preset_mode": {
+      "message": "预设模式 '{mode}' 不被 {entity_id} 支持。请检查设备的可用预设。"
+    },
+    "invalid_fan_mode": {
+      "message": "风扇模式 '{mode}' 不被 {entity_id} 支持。请检查设备的可用风扇模式。"
+    },
+    "invalid_swing_mode": {
+      "message": "摆动模式 '{mode}' 不被 {entity_id} 支持。请检查设备的可用摆动模式。"
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "水平摆动模式 '{mode}' 不被 {entity_id} 支持。请检查设备的可用摆动模式。"
+    },
+    "temperature_out_of_range": {
+      "message": "温度 {temperature}° 超出 {entity_id} 的允许范围 ({min}° - {max}°)。"
+    },
+    "all_members_failed": {
+      "message": "{entity_id} 的所有成员均未响应。失败: {failed_members}"
+    }
   }
 }

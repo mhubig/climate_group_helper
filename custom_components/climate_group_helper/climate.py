@@ -66,6 +66,7 @@ from homeassistant.helpers.event import async_track_state_change_event, async_tr
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
+from homeassistant.exceptions import ServiceValidationError
 
 from .const import (
     ATTR_ACTIVE_SCHEDULE_ENTITY,
@@ -997,11 +998,44 @@ class ClimateGroup(GroupEntity, ClimateEntity, RestoreEntity):
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Forward the set_hvac_mode command to all climate in the climate group."""
+        if self._attr_hvac_modes and hvac_mode not in self._attr_hvac_modes:
+            raise ServiceValidationError(
+                translation_domain="climate_group_helper",
+                translation_key="invalid_hvac_mode",
+                translation_placeholders={"mode": str(hvac_mode), "entity_id": self.entity_id},
+            )
         self.climate_state_manager.update(hvac_mode=hvac_mode)
         await self.climate_call_handler.call_debounced(data={ATTR_HVAC_MODE: hvac_mode})
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Forward the set_temperature command to all climate in the climate group."""
+        temp = kwargs.get(ATTR_TEMPERATURE)
+        temp_low = kwargs.get(ATTR_TARGET_TEMP_LOW)
+        temp_high = kwargs.get(ATTR_TARGET_TEMP_HIGH)
+        for t in (temp, temp_low, temp_high):
+            if t is not None:
+                if self._attr_min_temp is not None and t < self._attr_min_temp:
+                    raise ServiceValidationError(
+                        translation_domain="climate_group_helper",
+                        translation_key="temperature_out_of_range",
+                        translation_placeholders={
+                            "temperature": str(t),
+                            "min": str(self._attr_min_temp),
+                            "max": str(self._attr_max_temp),
+                            "entity_id": self.entity_id,
+                        },
+                    )
+                if self._attr_max_temp is not None and t > self._attr_max_temp:
+                    raise ServiceValidationError(
+                        translation_domain="climate_group_helper",
+                        translation_key="temperature_out_of_range",
+                        translation_placeholders={
+                            "temperature": str(t),
+                            "min": str(self._attr_min_temp),
+                            "max": str(self._attr_max_temp),
+                            "entity_id": self.entity_id,
+                        },
+                    )
         self.climate_state_manager.update(**kwargs)
         await self.climate_call_handler.call_debounced(data=kwargs)
 
@@ -1012,21 +1046,45 @@ class ClimateGroup(GroupEntity, ClimateEntity, RestoreEntity):
 
     async def async_set_fan_mode(self, fan_mode: str) -> None:
         """Forward the set_fan_mode to all climate in the climate group."""
+        if self._attr_fan_modes and fan_mode not in self._attr_fan_modes:
+            raise ServiceValidationError(
+                translation_domain="climate_group_helper",
+                translation_key="invalid_fan_mode",
+                translation_placeholders={"mode": fan_mode, "entity_id": self.entity_id},
+            )
         self.climate_state_manager.update(fan_mode=fan_mode)
         await self.climate_call_handler.call_debounced(data={ATTR_FAN_MODE: fan_mode})
 
     async def async_set_preset_mode(self, preset_mode: str) -> None:
         """Forward the set_preset_mode to all climate in the climate group."""
+        if self._attr_preset_modes and preset_mode not in self._attr_preset_modes:
+            raise ServiceValidationError(
+                translation_domain="climate_group_helper",
+                translation_key="invalid_preset_mode",
+                translation_placeholders={"mode": preset_mode, "entity_id": self.entity_id},
+            )
         self.climate_state_manager.update(preset_mode=preset_mode)
         await self.climate_call_handler.call_debounced(data={ATTR_PRESET_MODE: preset_mode})
 
     async def async_set_swing_mode(self, swing_mode: str) -> None:
         """Forward the set_swing_mode to all climate in the climate group."""
+        if self._attr_swing_modes and swing_mode not in self._attr_swing_modes:
+            raise ServiceValidationError(
+                translation_domain="climate_group_helper",
+                translation_key="invalid_swing_mode",
+                translation_placeholders={"mode": swing_mode, "entity_id": self.entity_id},
+            )
         self.climate_state_manager.update(swing_mode=swing_mode)
         await self.climate_call_handler.call_debounced(data={ATTR_SWING_MODE: swing_mode})
 
     async def async_set_swing_horizontal_mode(self, swing_horizontal_mode: str) -> None:
         """Set new target horizontal swing operation."""
+        if self._attr_swing_horizontal_modes and swing_horizontal_mode not in self._attr_swing_horizontal_modes:
+            raise ServiceValidationError(
+                translation_domain="climate_group_helper",
+                translation_key="invalid_swing_horizontal_mode",
+                translation_placeholders={"mode": swing_horizontal_mode, "entity_id": self.entity_id},
+            )
         self.climate_state_manager.update(swing_horizontal_mode=swing_horizontal_mode)
         await self.climate_call_handler.call_debounced(data={ATTR_SWING_HORIZONTAL_MODE: swing_horizontal_mode})
 

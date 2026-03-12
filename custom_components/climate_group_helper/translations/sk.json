@@ -412,5 +412,28 @@
       "turn_on": "Zapnúť",
       "turn_off": "Vypnúť"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "Režim HVAC '{mode}' nie je podporovaný zariadením {entity_id}. Skontrolujte dostupné režimy zariadenia."
+    },
+    "invalid_preset_mode": {
+      "message": "Prednastavený režim '{mode}' nie je podporovaný zariadením {entity_id}. Skontrolujte dostupné prednastavenia zariadenia."
+    },
+    "invalid_fan_mode": {
+      "message": "Režim ventilátora '{mode}' nie je podporovaný zariadením {entity_id}. Skontrolujte dostupné režimy ventilátora zariadenia."
+    },
+    "invalid_swing_mode": {
+      "message": "Režim oscilácie '{mode}' nie je podporovaný zariadením {entity_id}. Skontrolujte dostupné režimy oscilácie zariadenia."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Režim horizontálnej oscilácie '{mode}' nie je podporovaný zariadením {entity_id}. Skontrolujte dostupné režimy oscilácie zariadenia."
+    },
+    "temperature_out_of_range": {
+      "message": "Teplota {temperature}° je mimo povolený rozsah ({min}° - {max}°) pre {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Všetci členovia {entity_id} neodpovedali. Chyby: {failed_members}"
+    }
   }
 }

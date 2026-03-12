@@ -412,5 +412,28 @@
       "turn_on": "Allumer",
       "turn_off": "Éteindre"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "Le mode HVAC '{mode}' n'est pas pris en charge par {entity_id}. Vérifiez les modes disponibles de l'appareil."
+    },
+    "invalid_preset_mode": {
+      "message": "Le mode préréglage '{mode}' n'est pas pris en charge par {entity_id}. Vérifiez les préréglages disponibles de l'appareil."
+    },
+    "invalid_fan_mode": {
+      "message": "Le mode ventilateur '{mode}' n'est pas pris en charge par {entity_id}. Vérifiez les modes ventilateur disponibles de l'appareil."
+    },
+    "invalid_swing_mode": {
+      "message": "Le mode oscillation '{mode}' n'est pas pris en charge par {entity_id}. Vérifiez les modes oscillation disponibles de l'appareil."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Le mode oscillation horizontale '{mode}' n'est pas pris en charge par {entity_id}. Vérifiez les modes oscillation disponibles de l'appareil."
+    },
+    "temperature_out_of_range": {
+      "message": "La température {temperature}° est en dehors de la plage autorisée ({min}° - {max}°) pour {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Tous les membres de {entity_id} n'ont pas répondu. Échecs: {failed_members}"
+    }
   }
 }

@@ -412,5 +412,28 @@
       "turn_on": "Turn on",
       "turn_off": "Turn off"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "HVAC mode '{mode}' is not supported by {entity_id}. Check the device's available modes."
+    },
+    "invalid_preset_mode": {
+      "message": "Preset mode '{mode}' is not supported by {entity_id}. Check the device's available presets."
+    },
+    "invalid_fan_mode": {
+      "message": "Fan mode '{mode}' is not supported by {entity_id}. Check the device's available fan modes."
+    },
+    "invalid_swing_mode": {
+      "message": "Swing mode '{mode}' is not supported by {entity_id}. Check the device's available swing modes."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Horizontal swing mode '{mode}' is not supported by {entity_id}. Check the device's available swing modes."
+    },
+    "temperature_out_of_range": {
+      "message": "Temperature {temperature}° is outside the allowed range ({min}° - {max}°) for {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "All members of {entity_id} failed to respond. Failures: {failed_members}"
+    }
   }
 }

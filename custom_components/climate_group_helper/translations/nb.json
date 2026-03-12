@@ -412,5 +412,28 @@
       "turn_on": "Slå på",
       "turn_off": "Slå av"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "HVAC-modus '{mode}' støttes ikke av {entity_id}. Sjekk enhetens tilgjengelige moduser."
+    },
+    "invalid_preset_mode": {
+      "message": "Forhåndsinnstilling '{mode}' støttes ikke av {entity_id}. Sjekk enhetens tilgjengelige forhåndsinnstillinger."
+    },
+    "invalid_fan_mode": {
+      "message": "Viftemodus '{mode}' støttes ikke av {entity_id}. Sjekk enhetens tilgjengelige viftemoduser."
+    },
+    "invalid_swing_mode": {
+      "message": "Svingemodus '{mode}' støttes ikke av {entity_id}. Sjekk enhetens tilgjengelige svingemoduser."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Horisontal svingemodus '{mode}' støttes ikke av {entity_id}. Sjekk enhetens tilgjengelige svingemoduser."
+    },
+    "temperature_out_of_range": {
+      "message": "Temperatur {temperature}° er utenfor tillatt område ({min}° - {max}°) for {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Alle medlemmer av {entity_id} svarte ikke. Feil: {failed_members}"
+    }
   }
 }

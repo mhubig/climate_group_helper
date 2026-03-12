@@ -412,5 +412,28 @@
       "turn_on": "Einschalten",
       "turn_off": "Ausschalten"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "HVAC-Modus '{mode}' wird von {entity_id} nicht unterstützt. Prüfe die verfügbaren Modi des Geräts."
+    },
+    "invalid_preset_mode": {
+      "message": "Preset-Modus '{mode}' wird von {entity_id} nicht unterstützt. Prüfe die verfügbaren Presets des Geräts."
+    },
+    "invalid_fan_mode": {
+      "message": "Lüftermodus '{mode}' wird von {entity_id} nicht unterstützt. Prüfe die verfügbaren Lüftermodi des Geräts."
+    },
+    "invalid_swing_mode": {
+      "message": "Schwenkmodus '{mode}' wird von {entity_id} nicht unterstützt. Prüfe die verfügbaren Schwenkmodi des Geräts."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Horizontaler Schwenkmodus '{mode}' wird von {entity_id} nicht unterstützt. Prüfe die verfügbaren Schwenkmodi des Geräts."
+    },
+    "temperature_out_of_range": {
+      "message": "Temperatur {temperature}° liegt außerhalb des erlaubten Bereichs ({min}° - {max}°) für {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Alle Mitglieder von {entity_id} haben nicht geantwortet. Fehler: {failed_members}"
+    }
   }
 }

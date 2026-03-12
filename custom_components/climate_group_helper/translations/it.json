@@ -412,5 +412,28 @@
       "turn_on": "Accendi",
       "turn_off": "Spegni"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "La modalità HVAC '{mode}' non è supportata da {entity_id}. Controlla le modalità disponibili del dispositivo."
+    },
+    "invalid_preset_mode": {
+      "message": "La modalità preset '{mode}' non è supportata da {entity_id}. Controlla i preset disponibili del dispositivo."
+    },
+    "invalid_fan_mode": {
+      "message": "La modalità ventilatore '{mode}' non è supportata da {entity_id}. Controlla le modalità ventilatore disponibili del dispositivo."
+    },
+    "invalid_swing_mode": {
+      "message": "La modalità oscillazione '{mode}' non è supportata da {entity_id}. Controlla le modalità oscillazione disponibili del dispositivo."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "La modalità oscillazione orizzontale '{mode}' non è supportata da {entity_id}. Controlla le modalità oscillazione disponibili del dispositivo."
+    },
+    "temperature_out_of_range": {
+      "message": "La temperatura {temperature}° è al di fuori dell'intervallo consentito ({min}° - {max}°) per {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Tutti i membri di {entity_id} non hanno risposto. Errori: {failed_members}"
+    }
   }
 }

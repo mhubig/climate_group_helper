@@ -412,5 +412,28 @@
       "turn_on": "Inschakelen",
       "turn_off": "Uitschakelen"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "HVAC-modus '{mode}' wordt niet ondersteund door {entity_id}. Controleer de beschikbare modi van het apparaat."
+    },
+    "invalid_preset_mode": {
+      "message": "Voorinstelling '{mode}' wordt niet ondersteund door {entity_id}. Controleer de beschikbare voorinstellingen van het apparaat."
+    },
+    "invalid_fan_mode": {
+      "message": "Ventilatormodus '{mode}' wordt niet ondersteund door {entity_id}. Controleer de beschikbare ventilatormodi van het apparaat."
+    },
+    "invalid_swing_mode": {
+      "message": "Zwenkstand '{mode}' wordt niet ondersteund door {entity_id}. Controleer de beschikbare zwenkstanden van het apparaat."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Horizontale zwenkstand '{mode}' wordt niet ondersteund door {entity_id}. Controleer de beschikbare zwenkstanden van het apparaat."
+    },
+    "temperature_out_of_range": {
+      "message": "Temperatuur {temperature}° ligt buiten het toegestane bereik ({min}° - {max}°) voor {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Alle leden van {entity_id} hebben niet gereageerd. Fouten: {failed_members}"
+    }
   }
 }

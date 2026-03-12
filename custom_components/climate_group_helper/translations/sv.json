@@ -412,5 +412,28 @@
       "turn_on": "Slå på",
       "turn_off": "Stäng av"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "HVAC-läge '{mode}' stöds inte av {entity_id}. Kontrollera enhetens tillgängliga lägen."
+    },
+    "invalid_preset_mode": {
+      "message": "Förinställning '{mode}' stöds inte av {entity_id}. Kontrollera enhetens tillgängliga förinställningar."
+    },
+    "invalid_fan_mode": {
+      "message": "Fläktläge '{mode}' stöds inte av {entity_id}. Kontrollera enhetens tillgängliga fläktlägen."
+    },
+    "invalid_swing_mode": {
+      "message": "Svängläge '{mode}' stöds inte av {entity_id}. Kontrollera enhetens tillgängliga svänglägen."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Horisontellt svängläge '{mode}' stöds inte av {entity_id}. Kontrollera enhetens tillgängliga svänglägen."
+    },
+    "temperature_out_of_range": {
+      "message": "Temperatur {temperature}° är utanför det tillåtna intervallet ({min}° - {max}°) för {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Alla medlemmar i {entity_id} svarade inte. Fel: {failed_members}"
+    }
   }
 }

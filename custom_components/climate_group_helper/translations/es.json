@@ -412,5 +412,28 @@
       "turn_on": "Encender",
       "turn_off": "Apagar"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "El modo HVAC '{mode}' no es compatible con {entity_id}. Comprueba los modos disponibles del dispositivo."
+    },
+    "invalid_preset_mode": {
+      "message": "El modo preestablecido '{mode}' no es compatible con {entity_id}. Comprueba los preajustes disponibles del dispositivo."
+    },
+    "invalid_fan_mode": {
+      "message": "El modo de ventilador '{mode}' no es compatible con {entity_id}. Comprueba los modos de ventilador disponibles del dispositivo."
+    },
+    "invalid_swing_mode": {
+      "message": "El modo de oscilación '{mode}' no es compatible con {entity_id}. Comprueba los modos de oscilación disponibles del dispositivo."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "El modo de oscilación horizontal '{mode}' no es compatible con {entity_id}. Comprueba los modos de oscilación disponibles del dispositivo."
+    },
+    "temperature_out_of_range": {
+      "message": "La temperatura {temperature}° está fuera del rango permitido ({min}° - {max}°) para {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Todos los miembros de {entity_id} no respondieron. Fallos: {failed_members}"
+    }
   }
 }

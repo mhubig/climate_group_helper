@@ -412,5 +412,28 @@
       "turn_on": "Włącz",
       "turn_off": "Wyłącz"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "Tryb HVAC '{mode}' nie jest obsługiwany przez {entity_id}. Sprawdź dostępne tryby urządzenia."
+    },
+    "invalid_preset_mode": {
+      "message": "Tryb predefiniowany '{mode}' nie jest obsługiwany przez {entity_id}. Sprawdź dostępne ustawienia urządzenia."
+    },
+    "invalid_fan_mode": {
+      "message": "Tryb wentylatora '{mode}' nie jest obsługiwany przez {entity_id}. Sprawdź dostępne tryby wentylatora urządzenia."
+    },
+    "invalid_swing_mode": {
+      "message": "Tryb oscylacji '{mode}' nie jest obsługiwany przez {entity_id}. Sprawdź dostępne tryby oscylacji urządzenia."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Tryb oscylacji poziomej '{mode}' nie jest obsługiwany przez {entity_id}. Sprawdź dostępne tryby oscylacji urządzenia."
+    },
+    "temperature_out_of_range": {
+      "message": "Temperatura {temperature}° jest poza dozwolonym zakresem ({min}° - {max}°) dla {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Wszyscy członkowie {entity_id} nie odpowiedzieli. Błędy: {failed_members}"
+    }
   }
 }

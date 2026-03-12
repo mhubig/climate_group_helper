@@ -23,6 +23,7 @@ from homeassistant.components.climate import (
 from homeassistant.const import ATTR_ENTITY_ID, STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.core import Context, State
 from homeassistant.helpers.debounce import Debouncer
+from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 
 from .const import (
     MODE_MODES_MAP,
@@ -147,7 +148,12 @@ class BaseServiceCallHandler(ABC):
         await self._debouncer.async_call()
 
     async def _execute_calls(self, data: dict[str, Any] | None = None) -> None:
-        """Execute service calls with retry logic."""
+        """Execute service calls with retry logic and per-member error tracking.
+
+        Raises:
+            ServiceValidationError: Re-raised immediately if validation fails (fail-fast).
+            HomeAssistantError: Raised if ALL targeted members fail after all retries.
+        """
         attempts = 1 + self._group.retry_attempts
         delay = self._group.retry_delay
         context_id = self.CONTEXT_ID
@@ -159,6 +165,11 @@ class BaseServiceCallHandler(ABC):
 
         # Trigger hook for calls
         self._call_trigger()
+
+        # Track per-member errors across all attempts
+        member_errors: dict[str, str] = {}
+        all_targeted_entities: set[str] = set()
+        successful_entities: set[str] = set()
 
         for attempt in range(attempts):
             try:
@@ -172,7 +183,14 @@ class BaseServiceCallHandler(ABC):
 
                 for call in calls:
                     service = call["service"]
-                    service_data = {ATTR_ENTITY_ID: call["entity_ids"], **call["kwargs"]}
+                    entity_ids = call["entity_ids"]
+                    service_data = {ATTR_ENTITY_ID: entity_ids, **call["kwargs"]}
+
+                    # Track all targeted entities
+                    if isinstance(entity_ids, list):
+                        all_targeted_entities.update(entity_ids)
+                    else:
+                        all_targeted_entities.add(entity_ids)
 
                     # Stale guard: a new command may have arrived while the previous
                     # blocking async_call was running. task.cancel() cannot interrupt
@@ -181,25 +199,66 @@ class BaseServiceCallHandler(ABC):
                         _LOGGER.debug("[%s] Aborting stale call: kwargs=%s no longer match target_state", self._group.entity_id, call["kwargs"])
                         return
 
-                    await self._hass.services.async_call(
-                        domain=CLIMATE_DOMAIN,
-                        service=service,
-                        service_data=service_data,
-                        blocking=True,
-                        context=Context(id=context_id, parent_id=parent_id),
-                    )
+                    try:
+                        await self._hass.services.async_call(
+                            domain=CLIMATE_DOMAIN,
+                            service=service,
+                            service_data=service_data,
+                            blocking=True,
+                            context=Context(id=context_id, parent_id=parent_id),
+                        )
+                        # Mark these entities as successful
+                        if isinstance(entity_ids, list):
+                            successful_entities.update(entity_ids)
+                        else:
+                            successful_entities.add(entity_ids)
+                        _LOGGER.debug("[%s] Call (%d/%d) '%s' with data: %s, Parent ID: %s", self._group.entity_id, attempt + 1, attempts, service, service_data, parent_id)
 
-                    _LOGGER.debug("[%s] Call (%d/%d) '%s' with data: %s, Parent ID: %s", self._group.entity_id, attempt + 1, attempts, service, service_data, parent_id)
+                    except ServiceValidationError:
+                        # Fail-fast: validation errors should stop immediately
+                        raise
+                    except Exception as call_error:
+                        error_msg = str(call_error)
+                        # Track which entities failed
+                        if isinstance(entity_ids, list):
+                            for eid in entity_ids:
+                                member_errors[eid] = error_msg
+                        else:
+                            member_errors[entity_ids] = error_msg
 
+                        if "not_valid_hvac_mode" in error_msg:
+                            _LOGGER.debug("[%s] Call attempt (%d/%d) skipped (not supported): %s", self._group.entity_id, attempt + 1, attempts, error_msg)
+                        else:
+                            _LOGGER.warning("[%s] Call attempt (%d/%d) failed for %s: %s", self._group.entity_id, attempt + 1, attempts, entity_ids, call_error, exc_info=True)
+
+            except ServiceValidationError:
+                raise
             except Exception as error:
-                error_msg = str(error)
-                if "not_valid_hvac_mode" in error_msg:
-                    _LOGGER.debug("[%s] Call attempt (%d/%d) skipped (not supported): %s", self._group.entity_id, attempt + 1, attempts, error_msg)
-                else:
-                    _LOGGER.warning("[%s] Call attempt (%d/%d) failed: %s", self._group.entity_id, attempt + 1, attempts, error, exc_info=True)
+                _LOGGER.warning("[%s] Call attempt (%d/%d) failed: %s", self._group.entity_id, attempt + 1, attempts, error, exc_info=True)
 
             if attempts > 1 and attempt < (attempts - 1):
                 await asyncio.sleep(delay)
+
+        # After all attempts: check if ALL members failed
+        if all_targeted_entities and not successful_entities:
+            failed_summary = ", ".join(f"{eid}: {err}" for eid, err in member_errors.items())
+            raise HomeAssistantError(
+                translation_domain="climate_group_helper",
+                translation_key="all_members_failed",
+                translation_placeholders={
+                    "entity_id": self._group.entity_id,
+                    "failed_members": failed_summary or "unknown error",
+                },
+            )
+        elif member_errors:
+            # Partial failure: some succeeded, some failed — log but don't raise
+            _LOGGER.warning(
+                "[%s] Partial failure: %d of %d members failed: %s",
+                self._group.entity_id,
+                len(member_errors),
+                len(all_targeted_entities),
+                member_errors,
+            )
 
     def _generate_calls(self, data: dict[str, Any] | None = None, filter_state: FilterState | None = None) -> list[dict[str, Any]]:
         """Generate service calls. Must be implemented by derived classes."""

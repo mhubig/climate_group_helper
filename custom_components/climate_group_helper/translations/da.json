@@ -412,5 +412,28 @@
       "turn_on": "Tænd",
       "turn_off": "Sluk"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "HVAC-tilstand '{mode}' understøttes ikke af {entity_id}. Kontroller enhedens tilgængelige tilstande."
+    },
+    "invalid_preset_mode": {
+      "message": "Forudindstilling '{mode}' understøttes ikke af {entity_id}. Kontroller enhedens tilgængelige forudindstillinger."
+    },
+    "invalid_fan_mode": {
+      "message": "Blæsertilstand '{mode}' understøttes ikke af {entity_id}. Kontroller enhedens tilgængelige blæsertilstande."
+    },
+    "invalid_swing_mode": {
+      "message": "Svingretning '{mode}' understøttes ikke af {entity_id}. Kontroller enhedens tilgængelige svingretninger."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Horisontal svingretning '{mode}' understøttes ikke af {entity_id}. Kontroller enhedens tilgængelige svingretninger."
+    },
+    "temperature_out_of_range": {
+      "message": "Temperatur {temperature}° er uden for det tilladte område ({min}° - {max}°) for {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Alle medlemmer af {entity_id} svarede ikke. Fejl: {failed_members}"
+    }
   }
 }

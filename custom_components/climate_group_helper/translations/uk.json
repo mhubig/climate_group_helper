@@ -412,5 +412,28 @@
       "turn_on": "Увімкнути",
       "turn_off": "Вимкнути"
     }
+  },
+  "exceptions": {
+    "invalid_hvac_mode": {
+      "message": "Режим HVAC '{mode}' не підтримується пристроєм {entity_id}. Перевірте доступні режими пристрою."
+    },
+    "invalid_preset_mode": {
+      "message": "Режим пресету '{mode}' не підтримується пристроєм {entity_id}. Перевірте доступні пресети пристрою."
+    },
+    "invalid_fan_mode": {
+      "message": "Режим вентилятора '{mode}' не підтримується пристроєм {entity_id}. Перевірте доступні режими вентилятора пристрою."
+    },
+    "invalid_swing_mode": {
+      "message": "Режим коливання '{mode}' не підтримується пристроєм {entity_id}. Перевірте доступні режими коливання пристрою."
+    },
+    "invalid_swing_horizontal_mode": {
+      "message": "Режим горизонтального коливання '{mode}' не підтримується пристроєм {entity_id}. Перевірте доступні режими коливання пристрою."
+    },
+    "temperature_out_of_range": {
+      "message": "Температура {temperature}° виходить за допустимий діапазон ({min}° - {max}°) для {entity_id}."
+    },
+    "all_members_failed": {
+      "message": "Усі члени {entity_id} не відповіли. Помилки: {failed_members}"
+    }
   }
 }
